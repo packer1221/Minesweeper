@@ -1,0 +1,28 @@
+public class UnrevealedBomb extends BlankSquare {
+
+	public UnrevealedBomb()
+	{
+		super();
+	}
+	
+	
+	public void reveal()
+	{
+		Grid<Actor> gr = getGrid();
+		int numRow = gr.getNumRows();
+		int numCol = gr.getNumCols();
+		for(int row = 0; row < numRow; row++)
+		{
+			for(int col = 0; col < numCol; col++)
+			{
+				Location loc = new Location(row,col);
+				Actor theActor = gr.get(loc);
+				if(theActor instanceof UnrevealedBomb)
+				{
+					gr.remove(loc);
+					gr.put(loc, new RevealedBomb());
+				}
+			}
+		}
+	}
+}
