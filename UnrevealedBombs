@@ -1,10 +1,36 @@
+import info.gridworld.actor.Actor;  
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.grid.Grid;
+import info.gridworld.grid.Location;
+
+
+
+
 public class UnrevealedBomb extends BlankSquare {
 
-	public UnrevealedBomb()
+	private ActorWorld world;
+	public UnrevealedBomb(ActorWorld world)
 	{
 		super();
+		this.setColor(null);
+		this.world = world;
 	}
 	
+	public void flag()
+	{
+		Grid grid = getGrid();
+		Location loc = getLocation();
+		//	int row = loc.getRow();
+		//  int col = loc.getCol();
+		Actor theActor = getGrid().get(loc); // TODO : Doesn't work breaks here
+		boolean bomb = false;
+		if(theActor instanceof UnrevealedBomb)
+		{
+			bomb = true;
+		}
+		Flag flag = new Flag(bomb, world, loc);
+		world.add(loc, flag);
+	}
 	
 	public void reveal()
 	{
@@ -25,4 +51,6 @@ public class UnrevealedBomb extends BlankSquare {
 			}
 		}
 	}
+	
+	
 }
