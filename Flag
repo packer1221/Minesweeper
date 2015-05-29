@@ -1,0 +1,35 @@
+public class Flag extends Actor{
+
+	private boolean bomb;
+	private ActorWorld world;
+	private Location loc;
+	//private Grid grid;
+	public Flag(boolean bool, ActorWorld world, Location loc)
+	{
+		super();
+		
+		bomb = bool;
+		//this.grid = grid;
+		this.world = world;
+		this.loc = loc;
+	}
+	
+	public void unFlag()
+	{
+		if(bomb)
+		{
+			UnrevealedBomb bom = new UnrevealedBomb(world);
+			world.remove(loc);
+			world.add(loc, bom);
+		}
+		else
+		{
+			BlankSquare squ = new BlankSquare(world);
+			 world.add(loc, squ);
+		}
+	}
+	
+	protected boolean isBomb() {
+		return bomb;
+	}
+}
