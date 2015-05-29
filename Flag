@@ -7,7 +7,7 @@ public class Flag extends Actor{
 	public Flag(boolean bool, ActorWorld world, Location loc)
 	{
 		super();
-		
+		this.setColor(null);
 		bomb = bool;
 		//this.grid = grid;
 		this.world = world;
