@@ -3,7 +3,7 @@ public static void main(String [] args)
 {
 	BoundedGrid grid = new BoundedGrid(12,12);
 	ActorWorld newWorld = new ActorWorld(grid);
-	newWorld.add(new Flag());
+	
 	randomizeBombs(newWorld);
 	fillBoard(newWorld, grid);
 	
@@ -33,17 +33,4 @@ public static void fillBoard(ActorWorld newWorld, Grid grid)
 
 }
 
-/*
-for(int row = 0; row < grid.getNumRows(); row++)
-	{
-		for(int col = 0; col < grid.getNumCols(); col++)
-		{
-			Location loc = new Location(row,col);
-			Actor theActor = (Actor) grid.get(loc);
-			if(!(theActor instanceof UnrevealedBomb))
-			{
-				grid.put(loc, new BlankSquare());
-			}
-		}
-	}
-*/
+
