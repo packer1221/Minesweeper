@@ -23,7 +23,11 @@ public class BlankSquare extends Actor {
 	{
 		
 	}
-	
+	public void newGame()
+	{
+		MinesweeperMain main = new MinesweeperMain();
+		main.newGame();
+	}
 	public void reveal() //DEAL WITH GAME OVER/WON POPUPS
 	{
 		
