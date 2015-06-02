@@ -1,0 +1,235 @@
+import java.awt.Color;
+
+import javax.swing.JOptionPane;
+
+import java.util.ArrayList;
+
+import info.gridworld.actor.Actor;
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.grid.Grid;
+import info.gridworld.grid.Location;
+
+public class BlankSquare extends Actor {
+	
+	private ActorWorld world;
+	public BlankSquare(ActorWorld world) 
+	{
+		super();
+		this.setColor(null);
+		this.world= world;
+	}
+	
+	public BlankSquare() 
+	{
+		
+	}
+	
+	public void reveal() //DEAL WITH GAME OVER/WON POPUPS
+	{
+		
+		if(isRevealed() || gameOver())
+		{
+			return;
+		}
+		if(gameWon())
+		{
+			System.out.println("first");
+			revealSmile();
+			return;
+		}
+		else
+		{
+		int numN = numNeighbors();
+		
+		Location loc = this.getLocation();
+		getGrid().remove(loc);
+		
+		if(numN == 1)
+		{
+			BlankSquare newN = new NumberOne();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 2)
+		{
+			BlankSquare newN = new NumberTwo();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 3)
+		{
+			BlankSquare newN = new NumberThree();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 4)
+		{
+			BlankSquare newN = new NumberFour();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 5)
+		{
+			BlankSquare newN = new NumberFive();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 6)
+		{
+			BlankSquare newN = new NumberSix();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 7)
+		{
+			BlankSquare newN = new NumberSeven();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 8)
+		{
+			BlankSquare newN = new NumberEight();
+			getGrid().put(loc, newN);
+		}
+		if(numN == 0)
+		{
+			BlankSquare newN = new RevealedSquare();
+			getGrid().put(loc, newN);
+			revealNeigbors();
+		}
+		if(gameWon())
+		{
+			System.out.println("second");
+			revealSmile();
+			return;
+		}
+		}
+		
+		
+	}
+	
+	public void flag()
+	{
+		//Grid grid = getGrid();
+		Location loc = getLocation();
+		
+		Actor theActor = getGrid().get(loc); 
+		boolean bomb = false;
+		if(theActor instanceof UnrevealedBomb)
+		{
+			bomb = true;
+		}
+		Flag flag = new Flag(bomb, world, loc);
+		world.add(loc, flag);
+	}
+	
+	
+	private boolean gameOver()
+	{
+		
+		for(int i = 0; i < getGrid().getNumRows(); i++)
+		{
+			for(int k = 0; k < getGrid().getNumCols() ; k++)
+			{
+				Actor actor = getGrid().get(new Location(i, k));
+				if(actor instanceof RevealedBomb)
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean gameWon()
+	{
+		int numRow = getGrid().getNumRows();
+		int numCol = getGrid().getNumCols();
+		for(int row = 0; row < numRow; row++)
+		{
+			for(int col = 0; col < numCol; col++)
+			{
+				Actor actor = getGrid().get(new Location(row, col));
+				if(!(actor instanceof RevealedSquare) && !(actor instanceof Flag)&& !(actor instanceof UnrevealedBomb))
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	private void revealSmile()
+	{
+		int numRow = getGrid().getNumRows();
+		int numCol = getGrid().getNumCols();
+		for(int row = 0; row < numRow; row++)
+		{
+			for(int col = 0; col < numCol; col++)
+			{
+				Location loc = new Location(row,col);
+				Actor theActor = getGrid().get(loc);
+				if(theActor instanceof UnrevealedBomb)
+				{
+					getGrid().put(loc, new WinFace());
+					System.out.println("xxx");
+					
+				}
+				if(theActor instanceof Flag)
+				{
+					if(((Flag) theActor).isBomb())
+					{
+						getGrid().put(loc, new WinFace());
+						System.out.println("www");
+						
+					}
+				}
+			}
+		}
+	}
+	
+	private void revealNeigbors()
+	{
+		Location loc = this.getLocation();
+		ArrayList<Actor> checkNeighbors = getGrid().getNeighbors(loc);
+		
+		
+		for(Actor a: checkNeighbors)
+		{
+			BlankSquare blank = (BlankSquare)a;
+			blank.reveal();
+		}
+	}
+	
+	private boolean isRevealed()
+	{
+		if(this instanceof RevealedSquare)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private int numNeighbors()
+	{
+		Location loc = this.getLocation();
+		ArrayList<Actor> neighbors = getGrid().getNeighbors(loc);
+		int count = 0;
+		
+		for(Actor a: neighbors)
+		{
+			if(a instanceof Flag)
+			{
+			if(((Flag) a).isBomb())
+			{
+			count++;
+			}
+			}
+			if(a instanceof UnrevealedBomb)
+			{
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	
+
+}
