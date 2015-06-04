@@ -2,20 +2,29 @@ public class MinesweeperMain {
 public static void main(String [] args)
 
 {
+	count = 0;
 	newGame();
 }
 
+private static int count;
+private static int x;
+
 public static void newGame()
 {
+if(count==0)
+	{
 	JOptionPane jop = new JOptionPane();
 	String input = jop.showInputDialog("Please input the dimension of your gameboard:");
-	int x = Integer.parseInt(input);
+	x = Integer.parseInt(input);
+	}
 	BoundedGrid grid = new BoundedGrid(x,x);
 	ActorWorld newWorld = new ActorWorld(grid);
 	randomizeBombs(newWorld, x);
 	fillBoard(newWorld, grid, x);
+	count++;
 	newWorld.show();
 }
+
 public static void randomizeBombs(ActorWorld newWorld,int x)
 {
 	int counter = 0;
