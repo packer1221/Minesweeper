@@ -1,0 +1,73 @@
+
+import java.util.Random; 
+
+import info.gridworld.grid.Grid;
+import info.gridworld.world.*;
+import info.gridworld.actor.Actor;
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.grid.BoundedGrid;
+import info.gridworld.grid.Location;
+import info.gridworld.actor.Rock;
+
+import java.awt.Color;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+
+public class MinesweeperMain extends World{
+public static void main(String [] args)
+{
+	JOptionPane jop = new JOptionPane();
+	String input = jop.showInputDialog("Please input the dimension of your gameboard:");
+	int x = Integer.parseInt(input);
+	BoundedGrid grid = new BoundedGrid(x,x);
+	ActorWorld newWorld = new ActorWorld(grid);
+	randomizeBombs(newWorld, x);
+	fillBoard(newWorld, grid, x);
+
+	newWorld.setMessage("Welcome to Minesweeper! Select a square and reveal to begin. Have fun!");
+	newWorld.show();
+	
+}
+
+
+private String message;
+private JFrame frame;
+
+public static void randomizeBombs(ActorWorld newWorld,int x)
+{
+int counter = 0;
+while(counter<(x*x)/5)
+{
+newWorld.add(new UnrevealedBomb(newWorld));
+counter++;
+}
+}
+
+public void setMessage(String newMessage)
+{
+    message = newMessage;
+    repaint();
+}
+
+private void repaint()
+{
+    if (frame != null)
+        frame.repaint();
+}
+
+
+
+public static void fillBoard(ActorWorld newWorld, Grid grid, int x)
+{
+	int xSquared = x*x;
+	int blankSquares = xSquared - (x*x)/5;
+	for(int i = 0; i<blankSquares; i++)
+	{
+		newWorld.add(new BlankSquare(newWorld));
+	}
+}
+
+}
